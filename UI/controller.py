@@ -42,7 +42,7 @@ class Controller:
         anno = self._view._ddAnno.value
         if anno is None:
             self._view._txtOutSquadre.controls.clear()
-            self._view._txtOutSquadre.controls.append( ft.Text("Attenzione, selezionare un anno per contnuare", color="red"))
+            self._view._txtOutSquadre.controls.append( ft.Text("Attenzione, selezionare un anno per continuare", color="red"))
             self._view.update_page()
             return
 
@@ -64,7 +64,7 @@ class Controller:
         anno = self._view._ddAnno.value
         if anno is None:
             self._view._txtOutSquadre.controls.clear()
-            self._view._txtOutSquadre.controls.append( ft.Text("Attenzione, selezionare un anno per contnuare", color="red"))
+            self._view._txtOutSquadre.controls.append( ft.Text("Attenzione, selezionare un anno per continuare", color="red"))
             self._view.update_page()
             return
 
@@ -73,16 +73,42 @@ class Controller:
         self._view._txt_result.controls.clear()
         self._view._txt_result.controls.append( ft.Text(f"Grafo correttamente creato."))
         self._view._txt_result.controls.append(ft.Text(f"Il grafo è costituito da {numNodi} nodi e {numArchi} archi."))
-        self._view.update_page()
 
         self._view._btnDettagli.disabled = False
         self._view._btnPercorso.disabled = False
-        pass
+        self._view.update_page()
 
     # ----------------------------------------------------------------------------------------------------------------------------------
     def handleDettagli(self, e):
-        pass
+
+        if self._squadraSelezionata is None:
+            self._view._txtOutSquadre.controls.clear()
+            self._view._txtOutSquadre.controls.append( ft.Text("Attenzione, selezionare una squadra per continuare", color="red"))
+            self._view.update_page()
+            return
+
+        # [ (nodo, peso) , (nodo, peso) , ...]
+        vicini = self._model.getViciniOrdinati(self._squadraSelezionata)
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(ft.Text(f"Il vicinato conta {len(vicini)} squadre")) #connesso
+        for nodo in vicini:
+            self._view._txt_result.controls.append( ft.Text( f"{nodo[0]} -- peso: {nodo[1]}"))
+        self._view.update_page()
+
     # ----------------------------------------------------------------------------------------------------------------------------------
     def handlePercorso(self, e):
-        pass
+
+        if self._squadraSelezionata is None:
+            self._view._txtOutSquadre.controls.clear()
+            self._view._txtOutSquadre.controls.append(ft.Text("Attenzione, selezionare una squadra per continuare", color="red"))
+            self._view.update_page()
+            return
+
+        path, score = self._model.getCamminoOttimoV2(self._squadraSelezionata)
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(ft.Text(f"Trovato cammino ottimo che parte da {self._squadraSelezionata} con somma dei pesi uguale a {score}"))
+        for p in path:
+            self._view._txt_result.controls.append( ft.Text( f"{p[0]} -- peso: {p[1]} "))
+        self._view.update_page()
+
     # ----------------------------------------------------------------------------------------------------------------------------------
