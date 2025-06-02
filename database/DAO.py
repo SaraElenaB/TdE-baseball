@@ -23,6 +23,7 @@ class DAO():
         conn.close()
         return ris
 
+    # ---------------------------------------------------------------------------------------------------------------------------
     @staticmethod
     def getSquadreAnno(anno):
         conn = DBConnect.get_connection()
@@ -41,6 +42,7 @@ class DAO():
         conn.close()
         return ris
 
+    # ---------------------------------------------------------------------------------------------------------------------------
     @staticmethod
     def getSalarioGiocatoriSquadra(anno, idMapSalari):
         conn = DBConnect.get_connection()
@@ -62,3 +64,4 @@ class DAO():
         cursor.close()
         conn.close()
         return ris
+    # ---------------------------------------------------------------------------------------------------------------------------

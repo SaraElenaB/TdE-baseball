@@ -19,7 +19,6 @@ class Model:
     def buildGraph(self, anno):
         self._grafo.clear()
         nodes = DAO.getSquadreAnno(anno)
-
         #modo1
         # self._grafo.add_nodes_from(nodes)
         # for n1 in self._grafo.nodes:
@@ -40,9 +39,10 @@ class Model:
         for e in self._grafo.edges:
             self._grafo[e[0]][e[1]]["weight"] = salarioDelleSquadre[e[0]] + salarioDelleSquadre[e[1]]
 
+    # ---------------------------------------------------------------------------------------------------------------------------
     def getGrafoDetails(self):
         return len(self._grafo.nodes), len(self._grafo.edges)
-
+    #---------------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     m = Model()
     grafo = m.buildGraph(2015)

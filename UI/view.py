@@ -19,6 +19,7 @@ class View(ft.UserControl):
         self._txt_name = None
         self._txt_result = None
 
+    # ---------------------------------------------------------------------------------------------------------------------------
     def load_interface(self):
         # title
         self._title = ft.Text("TdP Baseball Manager 2024", color="blue", size=24)
@@ -59,6 +60,7 @@ class View(ft.UserControl):
         self._page.controls.append(ft.Container(self._txt_result, bgcolor="#deeded", height=350))
         self._page.update()
 
+    #---------------------------------------------------------------------------------------------------------------------------
     @property
     def controller(self):
         return self._controller
@@ -72,3 +74,5 @@ class View(ft.UserControl):
 
     def update_page(self):
         self._page.update()
+
+    # ---------------------------------------------------------------------------------------------------------------------------
