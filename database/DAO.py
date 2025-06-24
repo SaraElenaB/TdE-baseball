@@ -49,17 +49,20 @@ class DAO():
         ris = {}
         cursor = conn.cursor(dictionary=True)
 
-        query = """ select t.teamCode, t.ID, sum(s.salary) as sumGiocatoriSquadra
-                    from salaries s , teams t, appearances a 
-                    where a.`year` = t.`year`and t.`year` = s.`year`
-                    and a.`year` = %s
-                    and t.ID = a.teamID
+        query = """ select t.teamCode, t.ID sum(s.salary) as salarioTotSquadra
+                    from salaries s , appearances a , teams t 
+                    where s.`year` = 2015
+                    and s.`year` = a.`year`
+                    and s.`year` = t.`year`
+                    and a.teamID = t.ID
                     and a.playerID = s.playerID
-                    group by t.teamCode"""
+                    group by t.teamCode, t.name"""
         cursor.execute(query, (anno,))
+        # essenzialmente devo collegare Salary e Teams e lo faccio tramite Appearances -->
+        # prendi i dati dalle tabelle che hanno sicuramente tutti i valori!!!
 
         for row in cursor:
-            ris[idMapSalari[row["ID"]]] = row["sumGiocatoriSquadra"]
+            ris[idMapSalari[row["ID"]]] = row["salarioTotSquadra"]
 
         cursor.close()
         conn.close()

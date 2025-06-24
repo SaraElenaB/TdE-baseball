@@ -11,7 +11,7 @@ class Model:
     def __init__(self):
 
         self._grafo = nx.Graph()
-        nodes=[]
+        self._nodes=[]
         self._idMapSquadreEffettive={}
 
         self._bestPath=[]
@@ -27,7 +27,7 @@ class Model:
     # ---------------------------------------------------------------------------------------------------------------------------
     def buildGraph(self, anno):
         self._grafo.clear()
-        nodes = DAO.getSquadreAnno(anno)
+        self._nodes = DAO.getSquadreAnno(anno)
         #modo1
         # self._grafo.add_nodes_from(nodes)
         # for n1 in self._grafo.nodes:
@@ -36,14 +36,14 @@ class Model:
         #             self._grafo.add_edge(n1, n2)
 
         #modo2
-        for n1, n2 in itertools.combinations(nodes, 2):
+        for n1, n2 in itertools.combinations(self._nodes, 2):
             self._grafo.add_edge(n1, n2)
 
-        for n in nodes:
+        for n in self._nodes:
             self._idMapSquadreEffettive[n.ID] = n
 
-        print( f"Num nodi {len(self._grafo.nodes)} /nNum archi: {len(self._grafo.edges)}" )
-
+        #ho fatto una mappa come ris del DAO --> { IdSquadra1: salario, IdSquadra2: salario}
+        # peso --> somma salario s1 e s2
         salarioDelleSquadre = DAO.getSalarioGiocatoriSquadra(anno, self._idMapSquadreEffettive)
         for e in self._grafo.edges:
             self._grafo[e[0]][e[1]]["weight"] = salarioDelleSquadre[e[0]] + salarioDelleSquadre[e[1]]
@@ -115,7 +115,6 @@ class Model:
 
         viciniTuple.sort( key=lambda x: x[1], reverse=True)
         #non avendo altri archi --> non devo controlalre che il peso sia minore/maggiore
-        #for v in vicini:
         parziale.append(viciniTuple[0][0]) #prendo il primo nodo
         self._ricorsioneV2(parziale)
         parziale.pop()
@@ -174,6 +173,7 @@ class Model:
         return list(self._grafo.nodes)[index]
 
     # ---------------------------------------------------------------------------------------------------------------------------
+
 
 
 if __name__ == "__main__":
